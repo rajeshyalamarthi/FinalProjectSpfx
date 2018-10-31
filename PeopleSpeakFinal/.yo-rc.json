@@ -1,0 +1,11 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "isCreatingSolution": true,
+    "environment": "spo",
+    "version": "1.6.0",
+    "libraryName": "people-speak-final",
+    "libraryId": "500da918-49b4-4b12-8d35-c4ed3e27b677",
+    "packageManager": "npm",
+    "componentType": "webpart"
+  }
+}
