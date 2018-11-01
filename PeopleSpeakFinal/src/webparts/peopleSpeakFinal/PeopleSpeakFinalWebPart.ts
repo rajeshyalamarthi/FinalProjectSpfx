@@ -35,59 +35,134 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
 
 
         
-<div class="container">
 
 
-<div class="panel panel-primary">
-    <div class="panel-heading" >People Speak
- &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; 
-    <button class="btn btn-warning btn-circle" id="roundbutton">
-    <i class='fas fa-microphone' style='font-size:20px;color:white'></i>
-    </button>
+
+    <div class="panel panel-default">
+    <div class="panel-heading col-md-12"  style="background-color: #023576; color: #ccd6e4;">
+      <div style="float: left; font-size:large;">People Speak</div> 
+      <div style="float: right;"> 
+      <button class="btn btn-warning btn-circle btn-xs" id="roundbutton">
+      <i class='fas fa-microphone' style='font-size:20px;color:white;margin-top: 6px;'></i>
+      </button>
+      
+      </div>   
     </div>
-    </div>  
+    <!--   <div class="panel-body"> -->
+    
+    
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <li data-target="#myCarousel" data-slide-to="2"></li>
-  </ol>
 
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner">
-    <div class="item active">
-    <img src="https://www.google.co.in/search?q=dhoni+images&rlz=1C1GCEU_enIN820IN820&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjimq71iLHeAhVYWX0KHWOAAvQQ_AUIDigB&biw=1350&bih=648#imgrc=DDRdzhEx6KipYM" alt="New York">
+    
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+     
+    
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner" id="Innerbind">
+      
+      <span class='carousel-caption'>
+      
+      </span>
+      </div>
+    
+      <!-- Left and right controls -->
+      <a class="left carousel-control" href="#myCarousel" data-slide="next" style="margin-top:50%;height: max-content;">
+      <button class="btn btn-sq btn-warning btn-xs" style="margin-right: 45%;">
+      <i class='fas fa-angle-left fa-2x' style=''></i>
+      </button>
+      </a>
+
+     
+      
+            <a class="right carousel-control" href="#myCarousel" data-slide="next" style="margin-top:50%; height: max-content;">
+            <button class="btn btn-sq btn-warning btn-xs" style="margin-left: 45%; btn-xs">
+          <i class='fas fa-angle-right fa-2x' style=''></i>
+        </button>
+      </a>
+      
+    </div>
+   
+
+   
+
 
 
     </div>
-
-    <div class="item">
-    <button type="button" class="btn btn-warning">Warning</button>
-
-    </div>
-  
-    <div class="item">
-    <button type="button" class="btn btn-danger">Danger</button>
-    </div>
-  </div>
-
-  <!-- Left and right controls -->
-  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#myCarousel" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-</div>
+  <!--  </div>  -->  
 
 
-
+  <!-- <div class="col-md-12 text-center-block">  -->
+<button type="button" id="NavigationList" class="btn btn-warning btn-sm center-block " style="color:#0000ff; position: absolute; top:92%; right:39%;">View All</button>
+  <!--  </div>   -->
    `;
+
+this.DisplayData();
+
+  }
+
+
+  private DisplayData(){
+
+
+    var curl = this.context.pageContext.web.absoluteUrl;
+    let html: string = '';
+    if (Environment.type === EnvironmentType.Local) {
+      this.domElement.querySelector('#test').innerHTML = "sorry this does not work in local workbench";
+    }
+
+    else{
+      //ajaxcall
+
+      var call = $.ajax({
+       url: curl + "/_api/web/lists/getByTitle('SpfxPeopleSpeak')/Items/?$select= Id,Title,Designation,Picture",//&$top=3&$orderby=Id desc",
+        type: "GET",
+        dataType: "json",
+        headers: {
+          Accept: "application/json;odata=verbose"
+        }
+      });
+
+    call.done(function (data,textStatus,jqXHR) {
+   
+      var Slider = $("#Innerbind");
+       var Active;
+   
+      $.each(data.d.results, function (index,value) {
+       if(index=='0')
+       {
+         Active="item active"
+        }
+       
+       else
+       {
+         Active="item"
+        };
+   // binding data to wrapper for slides 
+   
+   //alert(value.Title);
+  // alert(value.Designation);
+  // alert(value.Picture.Description);
+
+      Slider.append("<div class='"+Active+"'><img src='"+value.Picture.Description+"' style='width:100%;height:230px;opacity: 1;'><div class='carousel-caption' style='position: absolute;bottom: 8px;left: 16px; padding-bottom: 0px;'><h6><p style='background-color:#080808; opacity:0.6;'>"+value.Title+"<br/><i>"+value.Designation+"</i></p></h6></div>  </div>");
+     }); 
+
+
+     });
+
+   call.fail(function (jqXHR, textStatus, errorThrown) {
+     var response = JSON.parse(jqXHR.responseText);
+     var message = response ? response.error.message.value : textStatus;
+     alert("Call failed. Error: " + message);
+   });
+
+   $(document).on("click","#NavigationList",function(){
+
+    window.location.href="https://acuvateuk.sharepoint.com/sites/TrainingDevSite/Lists/SpfxPeopleSpeak/AllItems.aspx";
+
+   })
+   
+    }
   }
 
   protected get dataVersion(): Version {
