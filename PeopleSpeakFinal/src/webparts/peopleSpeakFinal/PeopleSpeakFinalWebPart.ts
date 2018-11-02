@@ -112,7 +112,8 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
 
     // function to navigate to the list page when clicking on the view all function 
     $(document).on("click","#NavigationList",function(){
-    window.location.href="https://acuvateuk.sharepoint.com/sites/TrainingDevSite/Lists/SpfxPeopleSpeak/AllItems.aspx";
+      //$(this).attr('target','_blank');
+    window.open("https://acuvateuk.sharepoint.com/sites/TrainingDevSite/Lists/SpfxPeopleSpeak/AllItems.aspx",'_blank');
     })
     }
     } 
