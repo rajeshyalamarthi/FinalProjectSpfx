@@ -42,11 +42,13 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
 
     <div id="PeopleSpeakCarousel" class="carousel slide" data-ride="carousel">
     
+
     <!-- Wrapper for slides -->
     <div class="carousel-inner" id="DisplaySlides">
 
     </div>
     
+
     <!-- Left and right controls -->
     <a class="left carousel-control" href="#PeopleSpeakCarousel" data-slide="prev" style="margin-top:50%;height: max-content;">
     <button class="btn btn-sq btn-warning btn-xs" style="margin-right: 45%;">
@@ -61,6 +63,7 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
      </div>
      </div>  
 
+    
      <button type="button" id="NavigateToList" class="btn btn-warning btn-sm center-block " style="color:#0000ff; position: absolute; top:92%; right:39%;">View All</button>
       `;
 
