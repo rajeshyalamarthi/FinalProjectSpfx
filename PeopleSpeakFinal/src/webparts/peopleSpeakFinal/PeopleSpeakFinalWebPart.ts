@@ -8,7 +8,7 @@ from '@microsoft/sp-webpart-base';
 import { escape } from '@microsoft/sp-lodash-subset';
 import{SPComponentLoader} from '@microsoft/sp-loader';//to load all the css cdn paths which were used
 require('jquery');
-import * as $ from 'jquery';
+import * as $ from 'jquery';//importing jquery
 require("bootstrap");
 import styles from './PeopleSpeakFinalWebPart.module.scss';
 import * as strings from 'PeopleSpeakFinalWebPartStrings';
@@ -18,17 +18,21 @@ description: string;
 export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeopleSpeakFinalWebPartProps> {
 
     public render(): void {
-
-    let cssurl="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
+    //all The Css Cdn's Which Were Used In My WebPart
+    let Bootstrapurl="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
     let w3style="https://www.w3schools.com/w3css/4/w3.css";
     let glyphicon='https://use.fontawesome.com/releases/v5.4.1/css/all.css';
-    SPComponentLoader.loadCss(cssurl);
+    //Loading all the Css Cdn's Via SpComponenetLoader
+    SPComponentLoader.loadCss(Bootstrapurl);
     SPComponentLoader.loadCss(w3style);
     SPComponentLoader.loadCss(glyphicon);
-    this.domElement.innerHTML = `
-    
+    this.domElement.innerHTML = `  
+
+    <!-- Inserting Panel  -->
     <div class="panel panel-default">
     <div class="panel-heading col-md-12"  style="background-color: #023576; color: #ccd6e4;">
+    <!-- <div class="panel-heading col-md-12" style='${styles.navheader}'>-->
+
     <div style="float: left; font-size:large;">People Speak</div> 
     <div style="float: right;"> 
     <button class="btn btn-warning btn-circle btn-xs" id="roundbutton">
@@ -39,14 +43,16 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
 
 
     <!-- Inserting Carousel in the Panel -->
+
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    
     <!-- Wrapper for slides -->
     <div class="carousel-inner" id="Innerbind">
 
     </div>
     
     <!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" data-slide="next" style="margin-top:50%;height: max-content;">
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev" style="margin-top:50%;height: max-content;">
     <button class="btn btn-sq btn-warning btn-xs" style="margin-right: 45%;">
     <i class='fas fa-angle-left fa-2x' style=''></i>
     </button>
@@ -64,12 +70,13 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
 
      this.DisplayData();
 
-  }
+    }
 
 
   private DisplayData(){
+    try{
 
-    var curl = this.context.pageContext.web.absoluteUrl;
+    var absoluteUrl = this.context.pageContext.web.absoluteUrl;
     let html: string = '';
     if (Environment.type === EnvironmentType.Local) {
       this.domElement.querySelector('#test').innerHTML = "sorry this does not work in local workbench";
@@ -77,7 +84,8 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
     else{
       //ajaxcall Inorder TO Fetch The Data From The Sharepoint List And To Display
     var call = $.ajax({
-    url: curl + "/_api/web/lists/getByTitle('SpfxPeopleSpeak')/Items/?$select= Id,Title,Designation,Picture",//&$top=3&$orderby=Id desc",
+    //REstapi To Fetch All The details From The Sharepoint ListWhich Are Required Inorder To Display.
+    url: absoluteUrl + "/_api/web/lists/getByTitle('SpfxPeopleSpeak')/Items/?$select= Id,Title,Designation,Picture&$top=3&$orderby=Id desc",
     type: "GET",
     dataType: "json",
     headers: {
@@ -116,6 +124,13 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
     window.open("https://acuvateuk.sharepoint.com/sites/TrainingDevSite/Lists/SpfxPeopleSpeak/AllItems.aspx",'_blank');
     })
     }
+  }
+     catch(error)
+     {
+      console.log(error);
+
+     }
+
     } 
 
     protected get dataVersion(): Version {
