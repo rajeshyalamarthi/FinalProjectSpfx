@@ -16,22 +16,22 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
     public render(): void {
     //all The Css Cdn's Which Were Used In My WebPart
     let Bootstrapurl="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
-    let w3style="https://www.w3schools.com/w3css/4/w3.css";
-    let glyphicon='https://use.fontawesome.com/releases/v5.4.1/css/all.css';
+    let W3style="https://www.w3schools.com/w3css/4/w3.css";
+    let Glyphicon='https://use.fontawesome.com/releases/v5.4.1/css/all.css';
     //Loading all the Css Cdn's Via SpComponenetLoader
     SPComponentLoader.loadCss(Bootstrapurl);
-    SPComponentLoader.loadCss(w3style);
-    SPComponentLoader.loadCss(glyphicon);
+    SPComponentLoader.loadCss(W3style);
+    SPComponentLoader.loadCss(Glyphicon);
     this.domElement.innerHTML = `  
 
-    <!-- Inserting Panel  -->
+    <!-- Inserting Panel  --> 
     <div class="panel panel-default">
     <div class="panel-heading col-md-12"  style="background-color: #023576; color: #ccd6e4;">
     <!-- <div class="panel-heading col-md-12" style='${styles.navheader}'>-->
 
     <div style="float: left; font-size:large;">People Speak</div> 
     <div style="float: right;"> 
-    <button class="btn btn-warning btn-circle btn-xs" id="roundbutton">
+    <button class="btn btn-warning btn-circle btn-xs">
     <i class='fas fa-microphone' style='font-size:20px;color:white;margin-top: 6px;'></i>
     </button>
     </div>   
@@ -50,6 +50,7 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
     
 
     <!-- Left and right controls -->
+
     <a class="left carousel-control" href="#PeopleSpeakCarousel" data-slide="prev" style="margin-top:50%;height: max-content;">
     <button class="btn btn-sq btn-warning btn-xs" style="margin-right: 45%;">
     <i class='fas fa-angle-left fa-2x' style=''></i>
@@ -61,6 +62,8 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
      </button>
      </a> 
      </div>
+
+     
      </div>  
 
     
@@ -75,7 +78,7 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
    private DisplayData(){
     try{
 
-    var absoluteUrl = this.context.pageContext.web.absoluteUrl;
+    var AbsoluteUrl = this.context.pageContext.web.absoluteUrl;
     let html: string = '';
     if (Environment.type === EnvironmentType.Local) {
       this.domElement.querySelector('#test').innerHTML = "sorry this does not work in local workbench";
@@ -84,8 +87,7 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
       //ajaxcall Inorder TO Fetch The Data From The Sharepoint List And To Display
     var call = $.ajax({
     //REstapi To Fetch All The details From The Sharepoint ListWhich Are Required Inorder To Display.
-    url: absoluteUrl + "/_api/web/lists/getByTitle('SpfxPeopleSpeak')/Items/?$select= Id,Title,Designation,Picture&$top=3&$orderby=Id desc",
-  //url: absoluteUrl + "/_api/web/lists/getByTitle('TestingPeopleSpeak')/Items/?$select= Id,Title,Designation,Picture&$top=3&$orderby=Id desc",
+    url: AbsoluteUrl + "/_api/web/lists/getByTitle('SpfxPeopleSpeak')/Items/?$select= Id,Title,Designation,Picture&$top=3&$orderby=Id desc",
     type: "GET",
     dataType: "json",
     headers: {
@@ -118,7 +120,7 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
       Slider.append("<div class='"+Active+"'><img src='"+value.Picture.Description+"' style='width:100%;height:230px;opacity: 1;'><div class='carousel-caption' style='position: absolute;bottom: 8px;left: -40px; padding-bottom: 0px;'><h6><p style='background-color:#080808; color:white;opacity:0.6;'>"+value.Title+"<br/><i>"+value.Designation+"</i></p></h6></div>  </div>");
     }
     }); 
-    });
+     });
     
 
     call.fail(function (jqXHR, textStatus, errorThrown) {
