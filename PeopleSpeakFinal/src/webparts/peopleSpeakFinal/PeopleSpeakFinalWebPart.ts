@@ -72,7 +72,7 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
     }
 
 
-  private DisplayData(){
+   private DisplayData(){
     try{
 
     var absoluteUrl = this.context.pageContext.web.absoluteUrl;
@@ -85,6 +85,7 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
     var call = $.ajax({
     //REstapi To Fetch All The details From The Sharepoint ListWhich Are Required Inorder To Display.
     url: absoluteUrl + "/_api/web/lists/getByTitle('SpfxPeopleSpeak')/Items/?$select= Id,Title,Designation,Picture&$top=3&$orderby=Id desc",
+  //url: absoluteUrl + "/_api/web/lists/getByTitle('TestingPeopleSpeak')/Items/?$select= Id,Title,Designation,Picture&$top=3&$orderby=Id desc",
     type: "GET",
     dataType: "json",
     headers: {
@@ -104,9 +105,21 @@ export default class PeopleSpeakFinalWebPart extends BaseClientSideWebPart<IPeop
     Active="item"
     };
     // binding data to wrapper for slides 
-    Slider.append("<div class='"+Active+"'><img src='"+value.Picture.Description+"' style='width:100%;height:230px;opacity: 1;'><div class='carousel-caption' style='position: absolute;bottom: 8px;left: -40px; padding-bottom: 0px;'><h6><p style='background-color:#080808; color:white;opacity:0.6;'>"+value.Title+"<br/><i>"+value.Designation+"</i></p></h6></div>  </div>");
-     }); 
-     });
+    if(value.Picture==null&&value.Designation!=null){
+      Slider.append("<div class='"+Active+"'><img src='https://upmaa-pennmuseum.netdna-ssl.com/collections/images/image_not_available_300.jpg' style='width:100%;height:230px;opacity: 1;'><div class='carousel-caption' style='position: absolute;bottom: 8px;left: -40px; padding-bottom: 0px;'><h6><p style='background-color:#080808; color:white;opacity:0.6;'>"+value.Title+"<br/><i>"+value.Designation+"</i></p></h6></div>  </div>");
+    }
+    else if(value.Designation==null&&value.Picture!=null){
+      Slider.append("<div class='"+Active+"'><img src='"+value.Picture.Description+"' style='width:100%;height:230px;opacity: 1;'><div class='carousel-caption' style='position: absolute;bottom: 8px;left: -40px; padding-bottom: 0px;'><h6><p style='background-color:#080808; color:white;opacity:0.6;'>"+value.Title+"<br/><i>Designation Not Found</i></p></h6></div>  </div>");
+    }
+    else if(value.Picture==null &&value.Designation==null){
+      Slider.append("<div class='"+Active+"'><img src='https://upmaa-pennmuseum.netdna-ssl.com/collections/images/image_not_available_300.jpg' style='width:100%;height:230px;opacity: 1;'><div class='carousel-caption' style='position: absolute;bottom: 8px;left: -40px; padding-bottom: 0px;'><h6><p style='background-color:#080808; color:white;opacity:0.6;'>"+value.Title+"<br/><i>Designation Not Found</i></p></h6></div>  </div>");
+    }
+    else{
+      Slider.append("<div class='"+Active+"'><img src='"+value.Picture.Description+"' style='width:100%;height:230px;opacity: 1;'><div class='carousel-caption' style='position: absolute;bottom: 8px;left: -40px; padding-bottom: 0px;'><h6><p style='background-color:#080808; color:white;opacity:0.6;'>"+value.Title+"<br/><i>"+value.Designation+"</i></p></h6></div>  </div>");
+    }
+    }); 
+    });
+    
 
     call.fail(function (jqXHR, textStatus, errorThrown) {
     var response = JSON.parse(jqXHR.responseText);
